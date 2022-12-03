@@ -1,0 +1,69 @@
+<div class="form-container">
+  <form [formGroup]="shareLocationForm" (ngSubmit)="saveShareLocation()">
+    <div class="form">
+      <h3 class="title">Share Location</h3>
+      <div class="p-4">
+        <div class="mt-5 form-flex">
+          <label for="locationName"> Location Name : </label>
+          <input
+            class="input-width"
+            type="text"
+            formControlName="locationName"
+            id="locationName"
+          />
+        </div>
+
+        <div class="mt-5 form-flex">
+          <label for="map">Location on map : </label>
+            <app-map [height]="'150'" [width]="'250'" (click)="goToMap()"></app-map>
+        </div>
+
+        <div class="mt-5 form-flex">
+          <label for="locationType">Location type : </label>
+          <select
+            class="input-width"
+            name="locationType"
+            id="locationType"
+            formControlName="locationType"
+            (change)="changeLocationTypes($event)"
+          >
+            <option *ngFor="let type of locationTypes" [ngValue]="type.value">
+              {{ type.name }}
+            </option>
+          </select>
+        </div>
+        <div class="mt-5 form-flex">
+          <label for="logo">Logo : </label>
+          <input
+            class="y"
+            #file
+            id="my_file"
+            type="file"
+            accept="images/*"
+            style="display: none"
+            (change)="onChange($event)"
+          />
+          <button class="upload" type="button" (click)="file.click()">
+            <img
+              src="assets/images/upload.png"
+              width="170"
+              height="120"
+              alt="Upload-logo"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-buttons">
+      <button
+        class="button-success"
+        type="submit"
+        [disabled]="!shareLocationForm.valid"
+      >
+        Save
+      </button>
+      <button class="button-cancel" type="button">Cancel</button>
+    </div>
+  </form>
+</div>

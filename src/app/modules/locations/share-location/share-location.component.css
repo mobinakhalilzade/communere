@@ -1,0 +1,58 @@
+.form-container{
+  display: flex;
+  justify-content: center;
+}
+
+.form {
+  border: 2px solid var(--blue);
+  border-radius: 5px;
+  width: 450px;
+}
+
+.title {
+  margin: 0 auto;
+  padding: 8px;
+  background-color: var(--blue);
+  color: var(--white);
+}
+
+.form-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.input-width{
+  width: 245px
+}
+
+.upload {
+  background-color: var(--white);
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.button-success {
+  padding: 8px;
+  border-radius: 5px;
+  color: var(--white);
+  background-color: var(--blue);
+  border: none;
+}
+
+.button-cancel {
+  padding: 8px;
+  margin-left: 5px;
+  border-radius: 5px;
+  color: var(--white);
+  padding: 8px;
+  background-color: var(--gray);
+  border: none;
+}

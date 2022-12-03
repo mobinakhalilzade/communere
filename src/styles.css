@@ -1,1 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --white: #fff;
+  --black: #000;
+  --blue: #6844cc;
+  --gray: #808080;
+}
+
+@font-face {
+  font-family: "alata";
+  src: url(https://fonts.googleapis.com/css?family=Alata);
+}
+
+
+body {
+  margin: 0;
+  font-family: "alata", sans-serif ;
+  background-color: var(--white) ;
+}
+
+.mt-5 {
+  margin-top: 20px;
+}
+
+.p-4{
+  padding: 16px;
+}
