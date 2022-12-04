@@ -1,1 +1,5 @@
-<app-map></app-map>
+<div id="map-conainer">
+  <button class="submit-button" type="button" (click)="submitLocation()">Submit</button>
+  <app-map [height]="'100vh'" [width]="'100%'" (locations)="getLocations($event)"></app-map>
+</div>
+

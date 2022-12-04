@@ -7,9 +7,9 @@ export interface Map {
   lat: number;
   lng: number;
 }
-export interface LocationRequest {
+export interface LocationInterface {
   name: string;
-  map: Map;
+  map: Map[];
   type: number;
   logo: string;
 }

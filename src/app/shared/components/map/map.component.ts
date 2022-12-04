@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 
 import * as L from 'leaflet';
 
@@ -8,14 +14,15 @@ import * as L from 'leaflet';
   styleUrls: ['./map.component.css'],
 })
 export class MapComponent implements OnInit {
+  @Input() width: string = '100vh';
+  @Input() height: string = '100vw';
 
-  @Input() width:string = '100vh';
-  @Input() height:string = '100vw';
+  @Output() locations = new EventEmitter<any>();
 
   map: L.Map;
   marker: L.Marker;
   center: L.LatLngExpression;
-  myIcon = L.icon({
+  mapMarkerIcon = L.icon({
     iconUrl: 'marker-icon.png',
     iconSize: [38, 95],
     iconAnchor: [22, 94],
@@ -41,9 +48,16 @@ export class MapComponent implements OnInit {
     });
 
     this.marker = L.marker(this.center, {
-      icon: this.myIcon,
+      icon: this.mapMarkerIcon,
       draggable: true,
     }).addTo(this.map);
+
+    this.map.on('click', (e) => {
+      L.marker([e.latlng.lat, e.latlng.lng], {
+        icon: this.mapMarkerIcon,
+      }).addTo(this.map);
+      this.locations.emit(e.latlng);
+    });
 
     const tiles = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',

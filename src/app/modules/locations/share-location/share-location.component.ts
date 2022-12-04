@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import {
-  LocationRequest,
+  LocationInterface,
   locationTypes,
 } from 'src/app/core/interfaces/location/location.interface';
 import { ShareLocationService } from 'src/app/core/services/share-location.service';
@@ -14,28 +14,49 @@ import { ShareLocationService } from 'src/app/core/services/share-location.servi
   styleUrls: ['./share-location.component.css'],
 })
 export class ShareLocationComponent implements OnInit {
-  locationTypes: locationTypes[] = [
-    { name: 'Bussines', value: 1 },
-    { name: 'Home', value: 2 },
-    { name: 'Office', value: 3 },
-  ];
+  locationTypes: locationTypes[];
+  locationInfo: LocationInterface;
+  IsLogoExist: boolean = false;
+  routerData;
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private shareLocationService: ShareLocationService
-  ) {}
+  ) {
+    this.routerData = this.router.getCurrentNavigation()?.extras.state;
+    if (this.routerData?.['mapConfigMode']) {
+      this.getLocationInfoForm();
+      this.IsLogoExist = true;
+    }
+  }
 
   shareLocationForm = this.fb.group({
     locationName: ['', Validators.required],
-    map: { lat: 51.5, lng: 0.12 },
+    map: [{ lat: 51.5, lng: 0.12 }],
     locationType: 1,
     logo: '',
   });
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getLocationTypesForm();
+    this.locationInfo = this.shareLocationService.getLocationInfo();
+    if (this.locationInfo) {
+      this.getLocationInfoForm();
+    }
+  }
 
-  changeLocationTypes(event: any) {
-    console.log(event);
+  getLocationTypesForm() {
+    this.locationTypes = this.shareLocationService.getLocationTypes();
+  }
+
+  getLocationInfoForm() {
+    this.locationInfo = this.shareLocationService.getLocationInfo();
+    this.shareLocationForm.patchValue({
+      locationName: this.locationInfo.name,
+      map: this.routerData?.['mapLocations'],
+      locationType: this.locationInfo.type,
+      logo: this.locationInfo.logo,
+    });
   }
 
   onChange(event: any) {
@@ -43,26 +64,33 @@ export class ShareLocationComponent implements OnInit {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      console.log(reader.result);
       this.shareLocationForm.patchValue({
         logo: String(reader.result),
       });
     };
+    this.locationInfo = this.shareLocationService.getLocationInfo();
+    if (this.locationInfo) {
+      this.IsLogoExist = true;
+    }
   }
 
   saveShareLocation() {
     console.log(this.shareLocationForm.value);
     const form = this.shareLocationForm.value;
-    const location: LocationRequest = {
+    const location: LocationInterface = {
       name: form.locationName ?? '',
-      map: form.map!,
+      map: this.routerData?.['mapLocations']
+        ? this.routerData?.['mapLocations']
+        : [],
       type: form.locationType ?? 1,
       logo: form.logo ?? '',
     };
     this.shareLocationService.saveLocation(location);
+    this.getLocationInfoForm();
   }
 
   goToMap() {
+    this.saveShareLocation();
     this.router.navigate(['/location']);
   }
 }

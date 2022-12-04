@@ -15,7 +15,11 @@
 
         <div class="mt-5 form-flex">
           <label for="map">Location on map : </label>
-            <app-map [height]="'150'" [width]="'250'" (click)="goToMap()"></app-map>
+          <app-map
+            [height]="'150px'"
+            [width]="'250px'"
+            (click)="goToMap()"
+          ></app-map>
         </div>
 
         <div class="mt-5 form-flex">
@@ -25,7 +29,6 @@
             name="locationType"
             id="locationType"
             formControlName="locationType"
-            (change)="changeLocationTypes($event)"
           >
             <option *ngFor="let type of locationTypes" [ngValue]="type.value">
               {{ type.name }}
@@ -45,10 +48,18 @@
           />
           <button class="upload" type="button" (click)="file.click()">
             <img
+              *ngIf="!IsLogoExist"
               src="assets/images/upload.png"
               width="170"
               height="120"
               alt="Upload-logo"
+            />
+            <img
+              *ngIf="IsLogoExist"
+              width="120"
+              height="120"
+              [src]="locationInfo.logo"
+              alt="Logo"
             />
           </button>
         </div>
@@ -67,3 +78,4 @@
     </div>
   </form>
 </div>
+

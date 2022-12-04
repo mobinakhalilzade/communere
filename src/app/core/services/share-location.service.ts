@@ -1,15 +1,31 @@
 import { Injectable } from '@angular/core';
-import { LocationRequest } from '../interfaces/location/location.interface';
+import {
+  LocationInterface,
+  locationTypes,
+} from '../interfaces/location/location.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShareLocationService {
-  savedLocations: LocationRequest;
   constructor() {}
 
-  saveLocation(location: LocationRequest) {
+  getLocationTypes(): locationTypes[] {
+    return [
+      { name: 'Bussines', value: 1 },
+      { name: 'Home', value: 2 },
+      { name: 'Office', value: 3 },
+    ];
+  }
+
+  saveLocation(location: LocationInterface) {
     localStorage.setItem('Location', JSON.stringify(location));
-    return this.savedLocations;
+  }
+
+  getLocationInfo() {
+    const location = localStorage.getItem('Location');
+    if (location) {
+      return JSON.parse(location || '');
+    }
   }
 }
